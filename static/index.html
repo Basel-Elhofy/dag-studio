@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dynamic DAG Multi-Agent Studio</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-icon">⬡</span>
+      <div>
+        <h1>DAG Studio</h1>
+        <p class="tagline">Dynamic Multi-Agent Code Generation</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div id="stats" class="stats hidden">
+        <span class="stat"><b id="stat-time">0.0s</b><label>elapsed</label></span>
+        <span class="stat"><b id="stat-parallel">0</b><label>active agents</label></span>
+        <span class="stat"><b id="stat-peak">0</b><label>peak parallel</label></span>
+        <span class="stat"><b id="stat-artifacts">0</b><label>artifacts</label></span>
+        <span class="stat"><b id="stat-tokens">0</b><label>tokens</label></span>
+      </div>
+      <div id="run-badge" class="run-badge idle">idle</div>
+    </div>
+  </header>
+
+  <section class="query-bar">
+    <input
+      id="query-input"
+      type="text"
+      placeholder="Describe the software to build… e.g. 'A realtime team chat web app with auth, database and tests'"
+      autocomplete="off"
+    />
+    <button id="btn-run" class="btn primary">⬡ Generate</button>
+    <button id="btn-cancel" class="btn danger hidden">■ Cancel</button>
+    <div class="examples">
+      <button class="chip" data-q="A realtime team chat web app with auth, database and tests">realtime chat app</button>
+      <button class="chip" data-q="A REST API for a task manager with PostgreSQL, auth and Docker deployment">task API</button>
+      <button class="chip" data-q="An ML model serving API with tests and CI/CD">ML serving API</button>
+      <button class="chip" data-q="A SaaS billing dashboard with payments, frontend and docs">SaaS dashboard</button>
+    </div>
+  </section>
+
+  <main class="layout">
+    <section class="dag-panel">
+      <div class="panel-header">
+        <h2>Execution DAG</h2>
+        <span id="dag-empty" class="muted">Submit a query to plan a task graph</span>
+      </div>
+      <div id="dag-scroll" class="dag-scroll">
+        <svg id="dag-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+    </section>
+
+    <aside class="side">
+      <div class="tabs">
+        <button class="tab active" data-tab="agents">Agents</button>
+        <button class="tab" data-tab="log">Event Log</button>
+        <button class="tab" data-tab="files">Files</button>
+      </div>
+
+      <div id="tab-agents" class="tab-pane active">
+        <div id="agents-list" class="agents-list">
+          <p class="muted pad">Agents spawn here as the planner decomposes your query.</p>
+        </div>
+      </div>
+
+      <div id="tab-log" class="tab-pane">
+        <div id="event-log" class="event-log"></div>
+      </div>
+
+      <div id="tab-files" class="tab-pane">
+        <div id="files-list" class="files-list">
+          <p class="muted pad">Generated source files appear here.</p>
+        </div>
+        <pre id="file-view" class="file-view hidden"><code></code></pre>
+      </div>
+    </aside>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
